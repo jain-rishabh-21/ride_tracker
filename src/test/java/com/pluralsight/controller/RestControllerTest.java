@@ -17,8 +17,8 @@ public class RestControllerTest {
 	public void testCreateRides() {
 		RestTemplate restTemplate = new RestTemplate();
 		Ride ride = new Ride();
-		ride.setName("Trail");
-		ride.setDuration(10);
+		ride.setName("Death well");
+		ride.setDuration(20);
 		restTemplate.put("http://localhost:8080/ride_tracker/rides", ride);
 	}
 
