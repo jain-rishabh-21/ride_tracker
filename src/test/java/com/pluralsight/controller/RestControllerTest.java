@@ -13,27 +13,45 @@ import org.junit.Test;
 
 public class RestControllerTest {
 
-	@Test(timeout=3000)
-	public void testCreateRides() {
-		RestTemplate restTemplate = new RestTemplate();
-		Ride ride = new Ride();
-		ride.setName("Water Trail well");
-		ride.setDuration(15);
-		restTemplate.put("http://localhost:8080/ride_tracker/rides", ride);
-	}
+    @Test(timeout = 3000)
+    public void testCreateRides() {
+        RestTemplate restTemplate = new RestTemplate();
+        Ride ride = new Ride();
+        ride.setName("Water Trail well");
+        ride.setDuration(15);
+        restTemplate.put("http://localhost:8080/ride_tracker/rides", ride);
+    }
 
-	@Test(timeout=3000)
-	public void testGetRides() {
-		RestTemplate restTemplate = new RestTemplate();
+    @Test(timeout = 3000)
+    public void testGetRides() {
+        RestTemplate restTemplate = new RestTemplate();
 
-		ResponseEntity<List<Ride>> ridesResponse = restTemplate.exchange(
-				"http://localhost:8080/ride_tracker/rides", HttpMethod.GET,
-				null, new ParameterizedTypeReference<List<Ride>>() {
-				});
-		List<Ride> rides = ridesResponse.getBody();
+        ResponseEntity<List<Ride>> ridesResponse = restTemplate.exchange(
+                "http://localhost:8080/ride_tracker/rides", HttpMethod.GET,
+                null, new ParameterizedTypeReference<List<Ride>>() {
+                });
+        List<Ride> rides = ridesResponse.getBody();
 
-		for (Ride ride : rides) {
-			System.out.println("Ride name: " + ride.getName());
-		}
-	}
+        for (Ride ride : rides) {
+            System.out.println("Ride name: " + ride.getName());
+        }
+    }
+
+    @Test(timeout = 3000)
+    public void testGetRide() {
+        RestTemplate restTemplate = new RestTemplate();
+
+        Ride ride = restTemplate.getForObject("http://localhost:8080/ride_tracker/ride/1", Ride.class);
+        System.out.println("Ride Name: " + ride.getName());
+    }
+
+    @Test(timeout = 3000)
+    public void testUpdateRid() {
+        RestTemplate restTemplate = new RestTemplate();
+
+        Ride ride = restTemplate.getForObject("http://localhost:8080/ride_tracker/ride/1", Ride.class);
+        ride.setDuration(ride.getDuration() + 1);
+        restTemplate.put("http://localhost:8080/ride_tracker/ride", ride);
+        System.out.println("Ride Name: " + ride.getName());
+    }
 }
